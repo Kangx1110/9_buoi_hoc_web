@@ -1,0 +1,442 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background-color: #0d1428;
+
+    color: #ffffff;
+
+    min-height: 100vh;
+
+    padding: 50px 0;
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container {
+
+    width: 90%;
+
+    max-width: 1400px;
+
+    margin: auto;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+
+    margin-bottom: 60px;
+}
+
+
+.small-title {
+
+    color: #65a5ff;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    letter-spacing: 4px;
+
+    margin-bottom: 32px;
+}
+
+
+.header h1 {
+
+    font-size: 50px;
+
+    margin-bottom: 15px;
+}
+
+
+.header p {
+
+    color: #9fb2d4;
+
+    font-size: 18px;
+
+    line-height: 1.7;
+
+    max-width: 700px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.form-container {
+
+    background-color: #141e35;
+
+    border: 1px solid #293653;
+
+    border-radius: 18px;
+
+    padding: 30px;
+
+    margin-bottom: 70px;
+}
+
+
+.form-container h2 {
+
+    font-size: 25px;
+
+    margin-bottom: 25px;
+}
+
+
+form {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.form-group:nth-child(3) {
+
+    grid-column: span 2;
+}
+
+
+label {
+
+    color: #a9b9d5;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+}
+
+
+input,
+textarea {
+
+    background-color: #0d1428;
+
+    color: white;
+
+    border: 1px solid #34425e;
+
+    border-radius: 8px;
+
+    padding: 13px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+
+input:focus,
+textarea:focus {
+
+    border-color: #5f9df7;
+}
+
+
+textarea {
+
+    min-height: 100px;
+
+    resize: vertical;
+}
+
+
+button {
+
+    grid-column: span 2;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background-color: #357cf5;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+button:hover {
+
+    background-color: #2563d8;
+}
+
+
+/* =========================
+   SECTION TITLE
+========================= */
+
+.notification-section {
+
+    margin-bottom: 50px;
+}
+
+
+.section-title {
+
+    margin-bottom: 35px;
+}
+
+
+.section-title span {
+
+    color: #65a5ff;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    letter-spacing: 4px;
+}
+
+
+.section-title h2 {
+
+    font-size: 42px;
+
+    margin-top: 25px;
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.notification-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 25px;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.notification-card {
+
+    background-color: #121b30;
+
+    border: 1px solid #293653;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    transition: 0.3s;
+
+    min-height: 500px;
+}
+
+
+.notification-card:hover {
+
+    transform: translateY(-8px);
+
+    border-color: #4f78bd;
+
+    box-shadow:
+            0 15px 40px
+            rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================
+   IMAGE
+========================= */
+
+.notification-image {
+
+    height: 225px;
+
+    background-color: #1a2640;
+
+    overflow: hidden;
+}
+
+
+.notification-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition: 0.3s;
+}
+
+
+.notification-card:hover
+.notification-image img {
+
+    transform: scale(1.05);
+}
+
+
+/* =========================
+   CARD CONTENT
+========================= */
+
+.notification-content {
+
+    padding: 30px;
+}
+
+
+.notification-content h3 {
+
+    font-size: 24px;
+
+    line-height: 1.5;
+
+    margin-bottom: 25px;
+}
+
+
+.notification-content p {
+
+    color: #9fb2d4;
+
+    font-size: 17px;
+
+    line-height: 1.7;
+
+    min-height: 115px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.notification-footer {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 25px;
+}
+
+
+.tag {
+
+    background-color: #172743;
+
+    color: #5fa0ff;
+
+    padding: 9px 14px;
+
+    border-radius: 20px;
+
+    font-size: 14px;
+}
+
+
+.notification-id {
+
+    color: #687b9e;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1000px) {
+
+    .notification-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    body {
+
+        padding: 30px 0;
+    }
+
+
+    .header h1 {
+
+        font-size: 38px;
+    }
+
+
+    form {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .form-group:nth-child(3) {
+
+        grid-column: span 1;
+    }
+
+
+    button {
+
+        grid-column: span 1;
+    }
+
+
+    .notification-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+}
