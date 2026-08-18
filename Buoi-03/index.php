@@ -1,71 +1,88 @@
 <?php
 
-$fullname = "";
-$email = "";
-$subject = "";
-$content = "";
+require_once "functions.php";
+
+$notifications = [
+    [
+        "id" => 1,
+        "title" => "Công khai luận án",
+        "description" => "Công khai thông tin luận án Tiến sĩ của nghiên cứu sinh Trần Thị Thịnh trước khi bảo vệ luận án cấp Trường Đại học Thủ đô Hà Nội",
+        "image_url" => "https://hnmu.edu.vn/sites/default/files/2026-08/anh-cong-khai.png"
+    ],
+
+    [
+        "id" => 2,
+        "title" => "Thông điệp",
+        "description" => "Thông điệp năm học 2026 - 2027 của Hiệu trưởng",
+        "image_url" => "https://hnmu.edu.vn/sites/default/files/2026-08/logo-hnmu-1.ai_.png"
+    ],
+
+    [
+        "id" => 3,
+        "title" => "Thông báo học phí",
+        "description" => "Nhà trường thông báo thời gian nộp học phí cho học kỳ mới. Sinh viên cần hoàn thành đúng thời hạn.",
+        "image_url" => "https://hnmu.edu.vn/sites/default/files/2026-06/quyet-dinh_4.jpg"
+    ]
+];
+
+$title = "";
+$description = "";
 $image_url = "";
 
-$error = "";
-$success = false;
+$error_title = "";
+$error_description = "";
+$error_image = "";
+
+$success = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // Nhận dữ liệu
-    $fullname = trim($_POST["fullname"] ?? "");
-    $email = trim($_POST["email"] ?? "");
-    $subject = trim($_POST["subject"] ?? "");
-    $content = trim($_POST["content"] ?? "");
+    $title = trim($_POST["title"] ?? "");
+    $description = trim($_POST["description"] ?? "");
     $image_url = trim($_POST["image_url"] ?? "");
 
+    if ($title === "") {
+        $error_title = "Vui lòng nhập tiêu đề.";
+    }
 
-    // 1. Kiểm tra họ tên không được rỗng
-    if ($fullname === "") {
+    if ($description === "") {
+        $error_description = "Vui lòng nhập nội dung.";
+    }
 
-        $error = "Họ tên không được để trống.";
-
-    // Kiểm tra họ tên chỉ chứa chữ cái và khoảng trắng
-    } elseif (!preg_match("/^[a-zA-ZÀ-ỹ\s]+$/u", $fullname)) {
-
-        $error = "Họ tên chỉ được chứa chữ cái và khoảng trắng.";
-
-    // 2. Kiểm tra nội dung không được rỗng
-    } elseif ($content === "") {
-
-        $error = "Nội dung không được để trống.";
-
-    // 3. Kiểm tra email
-    } elseif (!preg_match(
-        "/^[a-zA-Z0-9.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/",
-        $email
-    )) {
-
-        $error = "Email không đúng định dạng.";
-
-    // 3 kiểm tra bắt buộc cho ảnh
-    // Kiểm tra 1: Không được bỏ trống
-    } elseif ($image_url === "") {
-
-        $error = "Vui lòng nhập link ảnh đại diện.";
-
-    // Kiểm tra 2: Phải là URL
+    if ($image_url === "") {
+        $error_image = "Vui lòng nhập URL hình ảnh.";
     } elseif (!filter_var($image_url, FILTER_VALIDATE_URL)) {
-
-        $error = "Link ảnh không đúng định dạng URL.";
-
-    // Kiểm tra 3: Phải là link ảnh
+        $error_image = "Image URL không hợp lệ.";
     } elseif (!preg_match(
-        '/\.(jpg|jpeg|png|gif)$/i',
-        parse_url($image_url, PHP_URL_PATH)
+        '/\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i',
+        $image_url
     )) {
+        $error_image = "URL phải là link hình ảnh (.jpg, .jpeg, .png, .gif, .webp hoặc .svg).";
+    }
 
-        $error = "Link phải là ảnh JPG, JPEG, PNG hoặc GIF.";
+    if (
+        $error_title === "" &&
+        $error_description === "" &&
+        $error_image === ""
+    ) {
 
-    } else {
+        $id = count($notifications) + 1;
 
-        $success = true;
+        $notifications[] = [
+            "id" => $id,
+            "title" => $title,
+            "description" => $description,
+            "image_url" => $image_url
+        ];
+
+        $success = "Thêm thông báo thành công!";
+
+        $title = "";
+        $description = "";
+        $image_url = "";
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -73,158 +90,120 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <meta charset="UTF-8">
-    <title>Form thông tin</title>
-
-    <style>
-        body {
-            font-family: Arial;
-            width: 700px;
-            margin: 30px auto;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-        }
-
-        textarea {
-            height: 100px;
-        }
-
-        button {
-            padding: 10px 20px;
-            margin-top: 10px;
-        }
-
-        .error {
-            color: red;
-            margin-bottom: 15px;
-        }
-
-        .success {
-            color: green;
-        }
-
-        .result {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin-top: 30px;
-        }
-
-        .result img {
-            max-width: 250px;
-            margin-top: 10px;
-        }
-    </style>
+    <title>Thông báo</title>
 </head>
 
 <body>
 
-<h2>FORM GỬI THÔNG TIN</h2>
+<h1>Thông báo</h1>
 
-<?php if ($error !== "") { ?>
+<h2>Thêm thông báo</h2>
 
-    <p class="error">
-        <?php echo $error; ?>
+<?php if ($success !== "") { ?>
+    <p style="color: green; font-weight: bold;">
+        <?php echo htmlspecialchars($success); ?>
     </p>
-
 <?php } ?>
-
 
 <form method="POST">
 
-    <label>Họ tên:</label>
+    <label>Tiêu đề:</label>
+
     <input
         type="text"
-        name="fullname"
-        value="<?php echo htmlspecialchars($fullname); ?>"
+        name="title"
+        value="<?php echo htmlspecialchars($title); ?>"
     >
 
-    <br>
+    <?php if ($error_title !== "") { ?>
+        <p style="color: red;">
+            <?php echo htmlspecialchars($error_title); ?>
+        </p>
+    <?php } ?>
 
-    <label>Email:</label>
-    <input
-        type="text"
-        name="email"
-        value="<?php echo htmlspecialchars($email); ?>"
-    >
-
-    <br>
-
-    <label>Chủ đề:</label>
-    <input
-        type="text"
-        name="subject"
-        value="<?php echo htmlspecialchars($subject); ?>"
-    >
-
-    <br>
+    <br><br>
 
     <label>Nội dung:</label>
-    <textarea name="content"><?php
-        echo htmlspecialchars($content);
-    ?></textarea>
 
     <br>
 
-    <label>Link ảnh đại diện:</label>
+    <textarea
+        name="description"
+        rows="5"
+        cols="50"
+    ><?php echo htmlspecialchars($description); ?></textarea>
+
+    <?php if ($error_description !== "") { ?>
+        <p style="color: red;">
+            <?php echo htmlspecialchars($error_description); ?>
+        </p>
+    <?php } ?>
+
+    <br><br>
+
+    <label>Image URL:</label>
+
     <input
         type="text"
         name="image_url"
         value="<?php echo htmlspecialchars($image_url); ?>"
-        placeholder="https://example.com/image.jpg"
     >
 
-    <br>
+    <?php if ($error_image !== "") { ?>
+        <p style="color: red;">
+            <?php echo htmlspecialchars($error_image); ?>
+        </p>
+    <?php } ?>
 
-    <button type="submit">Gửi thông tin</button>
+    <br><br>
+
+    <button type="submit">
+        Thêm thông báo
+    </button>
 
 </form>
 
+<hr>
 
-<?php if ($success) { ?>
+<h2>Danh sách thông báo</h2>
 
-    <div class="result">
+<?php foreach ($notifications as $notification) { ?>
 
-        <h2 class="success">
-            Gửi thông tin thành công!
-        </h2>
+    <img
+        src="<?php echo htmlspecialchars($notification["image_url"]); ?>"
+        width="300"
+        alt="<?php echo htmlspecialchars($notification["title"]); ?>"
+    >
 
-        <h3>Kết quả:</h3>
+    <h3>
+        <?php echo htmlspecialchars($notification["title"]); ?>
+    </h3>
 
-        <p>
-            <strong>Họ tên:</strong>
-            <?php echo htmlspecialchars($fullname); ?>
-        </p>
+    <p>
+        <?php echo htmlspecialchars($notification["description"]); ?>
+    </p>
 
-        <p>
-            <strong>Email:</strong>
-            <?php echo htmlspecialchars($email); ?>
-        </p>
+    <p>
+        <strong>ID:</strong>
+        <?php echo $notification["id"]; ?>
+    </p>
 
-        <p>
-            <strong>Chủ đề:</strong>
-            <?php echo htmlspecialchars($subject); ?>
-        </p>
+    <p>
+        <strong>Trạng thái:</strong>
+        <?php
+        echo htmlspecialchars(
+            getNotificationStatus(
+                $notification["title"],
+                $notification["description"]
+            )
+        );
+        ?>
+    </p>
 
-        <p>
-            <strong>Nội dung:</strong>
-            <?php echo nl2br(htmlspecialchars($content)); ?>
-        </p>
-
-        <p>
-            <strong>Ảnh đại diện:</strong>
-        </p>
-
-        <img
-            src="<?php echo htmlspecialchars($image_url); ?>"
-            alt="Ảnh đại diện"
-        >
-
-    </div>
+    <hr>
 
 <?php } ?>
 
 </body>
+
 </html>
