@@ -90,119 +90,192 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Thông báo</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1>Thông báo</h1>
+<div class="container">
 
-<h2>Thêm thông báo</h2>
+    <div class="header">
 
-<?php if ($success !== "") { ?>
-    <p style="color: green; font-weight: bold;">
-        <?php echo htmlspecialchars($success); ?>
-    </p>
-<?php } ?>
+        <div class="small-title">
+            HỆ THỐNG THÔNG BÁO
+        </div>
 
-<form method="POST">
+        <h1>Thông báo</h1>
 
-    <label>Tiêu đề:</label>
-
-    <input
-        type="text"
-        name="title"
-        value="<?php echo htmlspecialchars($title); ?>"
-    >
-
-    <?php if ($error_title !== "") { ?>
-        <p style="color: red;">
-            <?php echo htmlspecialchars($error_title); ?>
+        <p>
+            Cập nhật những thông tin mới nhất từ nhà trường.
         </p>
-    <?php } ?>
 
-    <br><br>
+    </div>
 
-    <label>Nội dung:</label>
 
-    <br>
+    <div class="form-container">
 
-    <textarea
-        name="description"
-        rows="5"
-        cols="50"
-    ><?php echo htmlspecialchars($description); ?></textarea>
+        <h2>Thêm thông báo</h2>
 
-    <?php if ($error_description !== "") { ?>
-        <p style="color: red;">
-            <?php echo htmlspecialchars($error_description); ?>
-        </p>
-    <?php } ?>
+        <?php if ($success !== "") { ?>
 
-    <br><br>
+            <p style="color: #4ade80; margin-bottom: 20px;">
+                <?php echo htmlspecialchars($success); ?>
+            </p>
 
-    <label>Image URL:</label>
+        <?php } ?>
 
-    <input
-        type="text"
-        name="image_url"
-        value="<?php echo htmlspecialchars($image_url); ?>"
-    >
 
-    <?php if ($error_image !== "") { ?>
-        <p style="color: red;">
-            <?php echo htmlspecialchars($error_image); ?>
-        </p>
-    <?php } ?>
+        <form method="POST">
 
-    <br><br>
+            <div class="form-group">
 
-    <button type="submit">
-        Thêm thông báo
-    </button>
+                <label>Tiêu đề:</label>
 
-</form>
+                <input
+                    type="text"
+                    name="title"
+                    value="<?php echo htmlspecialchars($title); ?>"
+                >
 
-<hr>
+                <?php if ($error_title !== "") { ?>
 
-<h2>Danh sách thông báo</h2>
+                    <p style="color: #ff6b6b; margin-top: 8px;">
+                        <?php echo htmlspecialchars($error_title); ?>
+                    </p>
 
-<?php foreach ($notifications as $notification) { ?>
+                <?php } ?>
 
-    <img
-        src="<?php echo htmlspecialchars($notification["image_url"]); ?>"
-        width="300"
-        alt="<?php echo htmlspecialchars($notification["title"]); ?>"
-    >
+            </div>
 
-    <h3>
-        <?php echo htmlspecialchars($notification["title"]); ?>
-    </h3>
 
-    <p>
-        <?php echo htmlspecialchars($notification["description"]); ?>
-    </p>
+            <div class="form-group">
 
-    <p>
-        <strong>ID:</strong>
-        <?php echo $notification["id"]; ?>
-    </p>
+                <label>Image URL:</label>
 
-    <p>
-        <strong>Trạng thái:</strong>
-        <?php
-        echo htmlspecialchars(
-            getNotificationStatus(
-                $notification["title"],
-                $notification["description"]
-            )
-        );
-        ?>
-    </p>
+                <input
+                    type="text"
+                    name="image_url"
+                    value="<?php echo htmlspecialchars($image_url); ?>"
+                >
 
-    <hr>
+                <?php if ($error_image !== "") { ?>
 
-<?php } ?>
+                    <p style="color: #ff6b6b; margin-top: 8px;">
+                        <?php echo htmlspecialchars($error_image); ?>
+                    </p>
+
+                <?php } ?>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Nội dung:</label>
+
+                <textarea
+                    name="description"
+                ><?php echo htmlspecialchars($description); ?></textarea>
+
+                <?php if ($error_description !== "") { ?>
+
+                    <p style="color: #ff6b6b; margin-top: 8px;">
+                        <?php echo htmlspecialchars($error_description); ?>
+                    </p>
+
+                <?php } ?>
+
+            </div>
+
+
+            <button type="submit">
+                Thêm thông báo
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="notification-section">
+
+        <div class="section-title">
+
+            <span>THÔNG BÁO MỚI NHẤT</span>
+
+            <h2>Danh sách thông báo</h2>
+
+        </div>
+
+
+        <div class="notification-grid">
+
+            <?php foreach ($notifications as $notification) { ?>
+
+                <div class="notification-card">
+
+                    <div class="notification-image">
+
+                        <img
+                            src="<?php echo htmlspecialchars($notification["image_url"]); ?>"
+                            alt="<?php echo htmlspecialchars($notification["title"]); ?>"
+                        >
+
+                    </div>
+
+
+                    <div class="notification-content">
+
+                        <h3>
+                            <?php echo htmlspecialchars($notification["title"]); ?>
+                        </h3>
+
+                        <p>
+                            <?php echo htmlspecialchars($notification["description"]); ?>
+                        </p>
+
+
+                        <div class="notification-footer">
+
+                            <span class="tag">
+
+                                <?php
+                                echo htmlspecialchars(
+                                    getNotificationStatus(
+                                        $notification["title"],
+                                        $notification["description"]
+                                    )
+                                );
+                                ?>
+
+                            </span>
+
+
+                            <span class="notification-id">
+
+                                ID:
+                                <?php echo $notification["id"]; ?>
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            <?php } ?>
+
+        </div>
+
+    </div>
+
+</div>
 
 </body>
 
