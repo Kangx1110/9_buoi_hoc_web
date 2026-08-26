@@ -226,7 +226,9 @@ require_once 'includes/header.php';
                     <div class="notification-meta-row">
                         <span>#<?= (int) $notification['id'] ?></span>
                         <span><?= htmlspecialchars(getNotificationAudienceName($notification['doi_tuong'])) ?></span>
-                        <span><?= htmlspecialchars($notification['trang_thai']) ?></span>
+                        <span class="status-pill <?= $isHidden ? 'status-hidden' : 'status-visible' ?>">
+                            <?= $isHidden ? 'Đang khóa' : 'Đang hiển thị' ?>
+                        </span>
                         <span><?= date('d/m/Y H:i', strtotime($notification['ngay_tao'])) ?></span>
                     </div>
 
@@ -235,15 +237,15 @@ require_once 'includes/header.php';
                             <input type="hidden" name="csrf_token" value="<?= $csrfToken ?>">
                             <input type="hidden" name="action" value="edit_form">
                             <input type="hidden" name="id" value="<?= (int) $notification['id'] ?>">
-                            <button class="btn-action" type="submit">Sửa</button>
+                            <button class="btn-action btn-edit" type="submit">✏ Sửa</button>
                         </form>
 
                         <form method="post">
                             <input type="hidden" name="csrf_token" value="<?= $csrfToken ?>">
                             <input type="hidden" name="action" value="toggle">
                             <input type="hidden" name="id" value="<?= (int) $notification['id'] ?>">
-                            <button class="btn-action" type="submit">
-                                <?= $isHidden ? 'Mở khóa' : 'Khóa' ?>
+                            <button class="btn-action btn-toggle" type="submit">
+                                <?= $isHidden ? '🔓 Mở khóa' : '🔒 Khóa' ?>
                             </button>
                         </form>
 
@@ -251,7 +253,7 @@ require_once 'includes/header.php';
                             <input type="hidden" name="csrf_token" value="<?= $csrfToken ?>">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="<?= (int) $notification['id'] ?>">
-                            <button class="btn-action btn-danger" type="submit">Xóa</button>
+                            <button class="btn-action btn-danger" type="submit">🗑 Xóa</button>
                         </form>
                     </div>
                 </div>
